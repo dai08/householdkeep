@@ -3,6 +3,6 @@
 
 <template>
 <div>
-<span>{{ props.tableMessage }} </span>
+<span>{{ tableMessage }} </span>
 </div>
 </template>
