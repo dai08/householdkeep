@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import HouseholdMain from '@/components/HouseholdMain.vue'
+  import HouseholdMain from '@/components/HouseholdMain.vue';
 </script>
 
 <template>
@@ -9,5 +9,4 @@
     </div>
   </div>
 </template>
-
 <style scoped></style>
