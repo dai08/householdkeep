@@ -10,9 +10,6 @@
     },
     setup(props) {
       return { props };
-      return {
-        textData:""
-      }
     }
   });
 </script>
@@ -22,9 +19,8 @@
     <span>{{ props.formMessage }}</span>
     <form>
       <textarea name="comment" placeholder="edit me" rows="4" v-model="textData"></textarea><br />
-      <input type="submit" value="送信" /><br />
+      <!-- タスク2でsendMessageを実装予定 -->
       <button v-on:click="sendMessage">送信</button>
-      {{ textData }}
     </form><br/>
   </div>
 </template>
