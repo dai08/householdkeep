@@ -2,14 +2,15 @@
   import Form from '@/components/Form.vue';
   import Table from '@/components/Table.vue';
   import { ref } from 'vue';
+  import { reactive } from 'vue';
 
-  const formMessage = 'フォームに好きなメッセージを書いて送ってみよう';
+  const formMessage = '家計簿入力';
   const tableMessage = 'テーブルの説明';
 
-// 初期表示はformコンポーネントÏ
+  // 初期表示はformコンポーネントÏ
   const currentTabName = ref('form');
 
-// 表示の切替を行う関数
+  // 表示の切替を行う関数
   const changeTab = (tabName) => {
     currentTabName.value = tabName;
   };
@@ -56,7 +57,7 @@
       <div v-if="currentTabName === 'form'">
         <Form :formMessage="formMessage"></Form>
       </div>
-      <div v-if="currentTabName === 'table'">
+      <div v-if="currentTabName === 'form'">
         <Table :tableMessage="tableMessage" />
       </div>
     </div>
