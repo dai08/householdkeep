@@ -1,8 +1,8 @@
 <script lang="ts">
   import { defineComponent, reactive } from '@vue/runtime-core';
   import { ref } from 'vue';
-  import Table from '@/components/Table.vue';
 
+  // ユーザーが選択した日付を値として保持。初期値は以下の通り
   const date = reactive({
     year: 2024,
     month: 4,
@@ -18,15 +18,23 @@
         type: String,
         required: true,
       },
+      month: {
+        type: Array,
+      },
     },
     setup(props) {
       const setDay = (day: number) => {
         date.day = day;
       };
-      const setValue = (val: number) => {
-        Table.month[2].foodCost = val;
+      const setData = (cost: string) => {
+        if (cost === '食費') {
+          month[date.day - 1].foodCost += price;
+        } else if (cost === '固定費') {
+          month[date.day - 1].fixedCost += price;
+        }
       };
-      return { props, date, cost, setDay, price, setValue };
+
+      return { props, date, cost, price, setDay, setData };
     },
   });
 </script>
@@ -35,6 +43,7 @@
   <div>
     <span>{{ props.formMessage }}</span>
     <br />
+    <!-- 日付、費用種類の選択及び値段の入力フォーム -->
     <select class="w-20" v-model="date.year">
       <option value="2022">2022</option>
       <option value="2023">2023</option>
@@ -55,12 +64,18 @@
       <option value="固定費">固定費</option>
     </select>
     <br />
-
     <input type="number" v-model.number="price" name="price" />
-    <button @click="setValue(300)">反映</button>
+    <!-- 費用が食費下固定費かで出力ボタンを切替えている。ボタン一つで済むような修正必須 -->
+    <button
+      @click="setData()"
+      class="shadow-lg px-2 py-1 bg-orange-400 text-lg text-white font-semibold rounded hover:bg-orange-500 hover:shadow-sm hover:translate-y-0.5 transform transition"
+    >
+      反映
+    </button>
+
     <br />
     <br />
-    <p>確認用</p>
+    <p>（確認用）</p>
     {{ date.year }}
     {{ date.month }}
     {{ date.day }}
