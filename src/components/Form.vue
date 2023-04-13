@@ -1,6 +1,6 @@
 <script lang="ts">
   import { defineComponent, reactive } from '@vue/runtime-core';
-  import { ref } from 'vue';
+  import { ref, type PropType } from 'vue';
 
   // ユーザーが選択した日付を値として保持。初期値は以下の通り
   const date = reactive({
@@ -19,7 +19,8 @@
         required: true,
       },
       month: {
-        type: Array,
+        type: Array as PropType<{ date: number; dateOfWeek: string; foodCost: number; fixedCost: number }[]>,
+        required: true,
       },
     },
     setup(props) {
@@ -27,13 +28,12 @@
         date.day = day;
       };
       const setData = (cost: string) => {
-        if (cost === '食費') {
-          month[date.day - 1].foodCost += price;
-        } else if (cost === '固定費') {
-          month[date.day - 1].fixedCost += price;
+        if (cost == '食費') {
+          props.month[1].foodCost += price;
+        } else if (cost == '固定費') {
+          props.month[date.day - 1].fixedCost += price;
         }
       };
-
       return { props, date, cost, price, setDay, setData };
     },
   });
