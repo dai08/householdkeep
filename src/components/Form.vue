@@ -1,16 +1,11 @@
 <script lang="ts">
-  import { defineComponent, reactive } from '@vue/runtime-core';
+  import { defineComponent } from '@vue/runtime-core';
   import { ref, type PropType } from 'vue';
 
   // ユーザーが選択した日付を値として保持。初期値は以下の通り
-  const date = reactive({
-    year: 2024,
-    month: 4,
-    day: 1,
-  });
 
   const cost = ref('食費');
-  const price = ref('0');
+  const price = ref(0);
 
   export default defineComponent({
     props: {
@@ -19,22 +14,31 @@
         required: true,
       },
       month: {
-        type: Array as PropType<{ date: number; dateOfWeek: string; foodCost: number; fixedCost: number }[]>,
+        type: Array as PropType<
+          { date: number; dateOfWeek: string; foodCost: number; fixedCost: number; id: number }[]
+        >,
         required: true,
+      },
+      date: {
+        type: Object as PropType<{ year: number; month: number; day: number }>,
+        required: true,
+      },
+      changeTab: {
+        type: Function,
       },
     },
     setup(props) {
       const setDay = (day: number) => {
-        date.day = day;
+        props.date.day = day;
       };
       const setData = (cost: string) => {
         if (cost == '食費') {
-          props.month[1].foodCost += price;
+          props.month[props.date.day - 1].foodCost += price.value;
         } else if (cost == '固定費') {
-          props.month[date.day - 1].fixedCost += price;
+          props.month[props.date.day - 1].fixedCost += price.value;
         }
       };
-      return { props, date, cost, price, setDay, setData };
+      return { props, cost, price, setDay, setData };
     },
   });
 </script>
@@ -64,10 +68,12 @@
       <option value="固定費">固定費</option>
     </select>
     <br />
-    <input type="number" v-model.number="price" name="price" />
-    <!-- 費用が食費下固定費かで出力ボタンを切替えている。ボタン一つで済むような修正必須 -->
+    <input type="number" v-model="price" name="price" />
     <button
-      @click="setData()"
+      @click="
+        setData(cost);
+        changeTab('table');
+      "
       class="shadow-lg px-2 py-1 bg-orange-400 text-lg text-white font-semibold rounded hover:bg-orange-500 hover:shadow-sm hover:translate-y-0.5 transform transition"
     >
       反映

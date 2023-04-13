@@ -7,14 +7,18 @@
         type: String,
         required: true,
       },
-
       month: [],
+      date: {},
       currentTabName: {},
       changeTab: {
         type: Function,
       },
+      changeFormData: {
+        type: Function,
+      },
     },
     setup(props) {
+      // 曜日によってテーブルの背景色を変更する関数
       const getBackgroundColor = (day: string) => {
         if (day == '土') {
           return '#e0f2fe';
@@ -41,8 +45,14 @@
         <td class="w-60 p-2">固定費</td>
       </tr>
       <tr v-for="user in month" :key="user.id">
-        <td class="border-r border-b" :style="{ backgroundColor: getBackgroundColor(user.dayOfWeek) }">
-          <div class="m-2" @click="changeTab('form')">
+        <td class="border-r border-b cursor-pointer" :style="{ backgroundColor: getBackgroundColor(user.dayOfWeek) }">
+          <div
+            class="m-2"
+            @click="
+              changeTab('form');
+              changeFormData(user.id);
+            "
+          >
             {{ user.date }}
           </div>
         </td>
