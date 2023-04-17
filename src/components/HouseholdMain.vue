@@ -26,9 +26,10 @@
     date.day = day;
   };
 
+  const originDay = { date: 1, dayOfWeek: '土', foodCost: 0, fixedCost: 0, id: 1 };
   const month = reactive([
-    { date: 1, dayOfWeek: '土', foodCost: 0, fixedCost: 0, id: 1 },
-    { date: 2, dayOfWeek: '日', foodCost: null, fixedCost: null, id: 2 },
+    { ...originDay },
+    { ...originDay, date: 2, dayOfWeek: '日', id: 2 },
     { date: 3, dayOfWeek: '月', foodCost: null, fixedCost: null, id: 3 },
     { date: 4, dayOfWeek: '火', foodCost: null, fixedCost: null, id: 4 },
     { date: 5, dayOfWeek: '水', foodCost: null, fixedCost: null, id: 5 },

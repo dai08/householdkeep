@@ -1,5 +1,6 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
+  import type { PropType } from 'vue';
 
   export default defineComponent({
     props: {
@@ -7,14 +8,19 @@
         type: String,
         required: true,
       },
-      month: [],
-      date: {},
-      currentTabName: {},
+      month: {
+        type: Array as PropType<
+          { date: number; dateOfWeek: string; foodCost: number; fixedCost: number; id: number }[]
+        >,
+        required: true,
+      },
       changeTab: {
-        type: Function,
+        type: Function as PropType<(tabName: string) => void>,
+        required: true,
       },
       changeFormData: {
-        type: Function,
+        type: Function as PropType<(day: number) => void>,
+        required: true,
       },
     },
     setup(props) {
@@ -44,25 +50,25 @@
         <td class="w-60 p-2 border-r border-gray-400">食費</td>
         <td class="w-60 p-2">固定費</td>
       </tr>
-      <tr v-for="user in month" :key="user.id">
-        <td class="border-r border-b cursor-pointer" :style="{ backgroundColor: getBackgroundColor(user.dayOfWeek) }">
+      <tr v-for="days in month" :key="days.id">
+        <td class="border-r border-b cursor-pointer" :style="{ backgroundColor: getBackgroundColor(days.dayOfWeek) }">
           <div
             class="m-2"
             @click="
               changeTab('form');
-              changeFormData(user.id);
+              changeFormData(days.id);
             "
           >
-            {{ user.date }}
+            {{ days.date }}
           </div>
         </td>
-        <td class="m-2 p-0 border-r border-b" :style="{ backgroundColor: getBackgroundColor(user.dayOfWeek) }">
+        <td class="m-2 p-0 border-r border-b" :style="{ backgroundColor: getBackgroundColor(days.dayOfWeek) }">
           <div class="m-2">
-            {{ user.dayOfWeek }}
+            {{ days.dayOfWeek }}
           </div>
         </td>
-        <td class="m-2 border-r border-b text-right">{{ user.foodCost }}</td>
-        <td class="m-2 border-b text-right">{{ user.fixedCost }}</td>
+        <td class="m-2 border-r border-b text-right">{{ days.foodCost }}</td>
+        <td class="m-2 border-b text-right">{{ days.fixedCost }}</td>
       </tr>
     </table>
   </div>
