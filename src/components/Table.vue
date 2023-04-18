@@ -1,7 +1,7 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
   import type { PropType } from 'vue';
-  import type { DayOfWeek } from './util/types';
+  import { DAY_OF_WEEKS } from './util/constant';
 
   export default defineComponent({
     props: {
@@ -35,17 +35,12 @@
         type: Function as PropType<(day: number) => void>,
         required: true,
       },
-      DAY_OF_WEEKS: {
-        type: Array as PropType<DayOfWeek[]>,
-        required: true,
-      },
     },
     setup(props) {
       // 曜日によってテーブルの背景色を変更する関数
-      const getBackgroundColor = (day: string): string => {
-        return DAY_OF_WEEKS.find((arr) => arr.name === day).color;
+      const getBackgroundColor = (dayOfWeek: string): string => {
+        return DAY_OF_WEEKS.find((arr) => arr.name === dayOfWeek)?.color ?? DAY_OF_WEEKS[0].color;
       };
-
       return { props, getBackgroundColor };
     },
   });
