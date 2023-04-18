@@ -3,44 +3,6 @@
   import type { PropType } from 'vue';
   import type { DayOfWeek } from './util/types';
 
-  const DAY_OF_WEEKS: DayOfWeek[] = [
-    {
-      id: 1,
-      name: '月',
-      color: 'bg-gray-100',
-    },
-    {
-      id: 2,
-      name: '火',
-      color: 'bg-gray-100',
-    },
-    {
-      id: 3,
-      name: '水',
-      color: 'bg-gray-100',
-    },
-    {
-      id: 4,
-      name: '木',
-      color: 'bg-gray-100',
-    },
-    {
-      id: 5,
-      name: '金',
-      color: 'bg-gray-100',
-    },
-    {
-      id: 6,
-      name: '土',
-      color: 'bg-blue-100',
-    },
-    {
-      id: 7,
-      name: '日',
-      color: 'bg-red-100',
-    },
-  ];
-
   export default defineComponent({
     props: {
       tableMessage: {
@@ -73,15 +35,15 @@
         type: Function as PropType<(day: number) => void>,
         required: true,
       },
+      DAY_OF_WEEKS: {
+        type: Array as PropType<DayOfWeek[]>,
+        required: true,
+      },
     },
     setup(props) {
       // 曜日によってテーブルの背景色を変更する関数
-      const getBackgroundColor = (day: string) => {
-        const compareColorDay = (DAY_OF_WEEKS: DayOfWeek[]) => {
-          return DAY_OF_WEEKS.name === day;
-        };
-        const result = DAY_OF_WEEKS.find(compareColorDay);
-        return result;
+      const getBackgroundColor = (day: string): string => {
+        return DAY_OF_WEEKS.find((arr) => arr.name === day).color;
       };
 
       return { props, getBackgroundColor };

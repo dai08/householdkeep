@@ -26,6 +26,7 @@
       },
       month: {
         type: Array as PropType<Month[]>,
+        required: true,
       },
     },
     setup(props) {
