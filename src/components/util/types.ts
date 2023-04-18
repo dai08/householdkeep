@@ -1,6 +1,18 @@
-import type { PropType } from 'vue';
+export type Month = {
+  date: number;
+  dateOfWeek: string;
+  foodCost: number;
+  fixedCost: number;
+  id: number;
+};
+export type Date = {
+  year: number;
+  month: number;
+  day: number;
+};
 
-export const month = {
-  type: Array as PropType<{ date: number; dateOfWeek: string; foodCost: number; fixedCost: number; id: number }[]>,
-  required: true,
+export type DayOfWeek = {
+  id: number;
+  name: string;
+  color: string;
 };

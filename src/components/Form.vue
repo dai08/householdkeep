@@ -1,7 +1,7 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
   import { ref, type PropType } from 'vue';
-  import { month } from './util/types';
+  import type { Month, Date } from './util/types';
 
   // ユーザーが選択した日付を値として保持。初期値は以下の通り
 
@@ -16,14 +16,16 @@
         type: String,
         required: true,
       },
-
       date: {
-        type: Object as PropType<{ year: number; month: number; day: number }>,
+        type: Object as PropType<Date>,
         required: true,
       },
       changeTab: {
         type: Function as PropType<(cost: string) => string>,
         required: true,
+      },
+      month: {
+        type: Array as PropType<Month[]>,
       },
     },
     setup(props) {
@@ -33,7 +35,7 @@
       // テーブルにデータを反映させ、テーブルに切替える
       const setData = (cost: string) => {
         if (cost == '1') {
-          month[props.date.day - 1].foodCost += price.value;
+          props.month[props.date.day - 1].foodCost += price.value;
         } else if (cost == '2') {
           props.month[props.date.day - 1].fixedCost += price.value;
         }

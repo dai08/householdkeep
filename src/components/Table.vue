@@ -1,6 +1,45 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
   import type { PropType } from 'vue';
+  import type { DayOfWeek } from './util/types';
+
+  const DAY_OF_WEEKS: DayOfWeek[] = [
+    {
+      id: 1,
+      name: '月',
+      color: 'bg-gray-100',
+    },
+    {
+      id: 2,
+      name: '火',
+      color: 'bg-gray-100',
+    },
+    {
+      id: 3,
+      name: '水',
+      color: 'bg-gray-100',
+    },
+    {
+      id: 4,
+      name: '木',
+      color: 'bg-gray-100',
+    },
+    {
+      id: 5,
+      name: '金',
+      color: 'bg-gray-100',
+    },
+    {
+      id: 6,
+      name: '土',
+      color: 'bg-blue-100',
+    },
+    {
+      id: 7,
+      name: '日',
+      color: 'bg-red-100',
+    },
+  ];
 
   export default defineComponent({
     props: {
@@ -8,9 +47,21 @@
         type: String,
         required: true,
       },
+      dayOfMonth: {
+        interface: Object as PropType<{
+          date: number;
+          dateOfWeek: string;
+          foodCost: number;
+          fixedCost: number;
+          id: number;
+        }>,
+        required: true,
+      },
       month: {
         type: Array as PropType<
-          { date: number; dateOfWeek: string; foodCost: number; fixedCost: number; id: number }[]
+          {
+            dayOfMonth: { date: number; dateOfWeek: string; foodCost: number; fixedCost: number; id: number };
+          }[]
         >,
         required: true,
       },
@@ -26,13 +77,11 @@
     setup(props) {
       // 曜日によってテーブルの背景色を変更する関数
       const getBackgroundColor = (day: string) => {
-        if (day == '土') {
-          return '#e0f2fe';
-        } else if (day == '日') {
-          return '#ffe4e6';
-        } else {
-          return 'white';
-        }
+        const compareColorDay = (DAY_OF_WEEKS: DayOfWeek[]) => {
+          return DAY_OF_WEEKS.name === day;
+        };
+        const result = DAY_OF_WEEKS.find(compareColorDay);
+        return result;
       };
 
       return { props, getBackgroundColor };
