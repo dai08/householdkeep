@@ -29,7 +29,7 @@
   };
   const month: Month[] = [...Array(30)].map((_, index) => ({
     date: index + 1,
-    dayOfWeek: DAY_OF_WEEKS.map(youbi=>youbi.name)[index % 7],
+    dayOfWeek: DAY_OF_WEEKS.map((youbi) => youbi.name)[index % 7],
     foodCost: 0,
     fixedCost: 0,
     id: index + 1,

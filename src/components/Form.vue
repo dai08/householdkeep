@@ -72,7 +72,8 @@
     <button
       @click="setData(cost)"
       class="shadow-lg px-2 py-1 bg-orange-400 text-lg text-white font-semibold rounded hover:bg-orange-500 hover:shadow-sm hover:translate-y-0.5 transform transition"
-    >反映
+    >
+      反映
     </button>
     <br />
     <br />
