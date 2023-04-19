@@ -35,3 +35,8 @@ export const DAY_OF_WEEKS = [
     color: 'LightPink',
   },
 ];
+
+export const COST_TYPE = [
+  { id: 1, text: '食費' },
+  { id: 2, text: '固定費' },
+];

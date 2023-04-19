@@ -1,6 +1,6 @@
 export type Month = {
   date: number;
-  dateOfWeek: string;
+  dayOfWeek: string;
   foodCost: number;
   fixedCost: number;
   id: number;

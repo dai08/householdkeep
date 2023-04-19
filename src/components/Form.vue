@@ -2,12 +2,9 @@
   import { defineComponent } from '@vue/runtime-core';
   import { ref, type PropType } from 'vue';
   import type { Month, Date } from './util/types';
+  import { COST_TYPE } from './util/constant';
 
-  // ユーザーが選択した日付を値として保持。初期値は以下の通り
-
-  const cost = ref('1');
-  // 1=食費、2=固定費
-
+  const cost = ref('食費');
   const price = ref(0);
 
   export default defineComponent({
@@ -35,14 +32,14 @@
       };
       // テーブルにデータを反映させ、テーブルに切替える
       const setData = (cost: string) => {
-        if (cost == '1') {
+        if (cost == '食費') {
           props.month[props.date.day - 1].foodCost += price.value;
-        } else if (cost == '2') {
+        } else if (cost == '固定費') {
           props.month[props.date.day - 1].fixedCost += price.value;
         }
         props.changeTab('table');
       };
-      return { props, cost, price, setDay, setData };
+      return { props, cost, price, setDay, setData, COST_TYPE };
     },
   });
 </script>
@@ -68,18 +65,15 @@
     </select>
     <br />
     <select class="w-20" v-model="cost">
-      <option value="1">食費</option>
-      <option value="2">固定費</option>
+      <option v-for="costType in COST_TYPE" :key="costType.id">{{ costType.text }}</option>
     </select>
     <br />
     <input type="number" v-model="price" name="price" />
     <button
       @click="setData(cost)"
       class="shadow-lg px-2 py-1 bg-orange-400 text-lg text-white font-semibold rounded hover:bg-orange-500 hover:shadow-sm hover:translate-y-0.5 transform transition"
-    >
-      反映
+    >反映
     </button>
-
     <br />
     <br />
     <p>（確認用）</p>

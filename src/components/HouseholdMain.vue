@@ -1,8 +1,10 @@
-<script setup>
-  import Form from '@/components/Form.vue';
-  import Table from '@/components/Table.vue';
+<script setup lang="ts">
+  import Form from './Form.vue';
+  import Table from './Table.vue';
   import { ref } from 'vue';
   import { reactive } from 'vue';
+  import type { Month } from './util/types';
+  import { DAY_OF_WEEKS } from './util/constant';
 
   const formMessage = '家計簿入力';
   const tableMessage = 'テーブルの説明';
@@ -17,20 +19,19 @@
   const currentTabName = ref('form');
 
   // 表示の切替を行う関数
-  const changeTab = (tabName) => {
+  const changeTab = (tabName: string) => {
     currentTabName.value = tabName;
   };
 
   // 日付の値を変更する関数（現状はdayのみ対象）
-  const changeFormData = (day) => {
+  const changeFormData = (day: number) => {
     date.day = day;
   };
-  // originDay = { date: 3, dayOfWeek: '月', foodCost: null, fixedCost: null, id: 3 };
-  const month = [...Array(30)].map((_, index) => ({
+  const month: Month[] = [...Array(30)].map((_, index) => ({
     date: index + 1,
-    dayOfWeek: ['日', '月', '火', '水', '木', '金', '土'][index % 7],
-    foodCost: null,
-    fixedCost: null,
+    dayOfWeek: DAY_OF_WEEKS.map(youbi=>youbi.name)[index % 7],
+    foodCost: 0,
+    fixedCost: 0,
     id: index + 1,
   }));
 </script>
