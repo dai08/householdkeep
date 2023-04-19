@@ -30,17 +30,24 @@
       const setDay = (day: number) => {
         props.date.day = day;
       };
-      // テーブルにデータを反映させ、テーブルに切替える
-      const setData = (cost: string) => {
+      // 食費や固定費に値を代入しつつ、tableタグに遷移するメソッド
+      const setDataFoodCost = () => {
         const dayData = props.month[props.date.day - 1];
-        if (cost == '食費') {
-          dayData.foodCost += price.value;
-        } else if (cost == '固定費') {
-          dayData.fixedCost += price.value;
+        dayData.foodCost ? (dayData.foodCost += price.value) : (dayData.foodCost = price.value);
+      };
+      const setDataFixedCost = () => {
+        const dayData = props.month[props.date.day - 1];
+        dayData.fixedCost ? (dayData.fixedCost += price.value) : (dayData.fixedCost = price.value);
+      };
+      const setData = (cost: string) => {
+        if (cost === '食費') {
+          setDataFoodCost();
+        } else if (cost === '固定費') {
+          setDataFixedCost();
         }
         props.changeTab('table');
       };
-      return { props, cost, price, setDay, setData, COST_TYPE };
+      return { props, cost, price, setDay, setDataFoodCost, setDataFixedCost, setData, COST_TYPE };
     },
   });
 </script>
