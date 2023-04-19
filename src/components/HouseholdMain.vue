@@ -29,9 +29,9 @@
   };
   const month: Month[] = [...Array(30)].map((_, index) => ({
     date: index + 1,
-    dayOfWeek: DAY_OF_WEEKS.map((youbi) => youbi.name)[index % 7],
-    foodCost: 0,
-    fixedCost: 0,
+    dayOfWeek: DAY_OF_WEEKS[index % 7].name,
+    foodCost: null,
+    fixedCost: null,
     id: index + 1,
   }));
 </script>
@@ -79,14 +79,7 @@
         <Form :formMessage="formMessage" :month="month" :date="date" :changeTab="changeTab"></Form>
       </div>
       <div v-if="currentTabName === 'table'">
-        <Table
-          :tableMessage="tableMessage"
-          :month="month"
-          :currentTabName="currentTabName"
-          :changeTab="changeTab"
-          :date="date"
-          :changeFormData="changeFormData"
-        />
+        <Table :tableMessage="tableMessage" :month="month" :changeTab="changeTab" :changeFormData="changeFormData" />
       </div>
     </div>
   </div>

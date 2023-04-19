@@ -18,7 +18,7 @@
         required: true,
       },
       changeTab: {
-        type: Function as PropType<(cost: string) => string>,
+        type: Function as PropType<(cost: string) => void>,
         required: true,
       },
       month: {
@@ -32,10 +32,11 @@
       };
       // テーブルにデータを反映させ、テーブルに切替える
       const setData = (cost: string) => {
+        const dayData = props.month[props.date.day - 1];
         if (cost == '食費') {
-          props.month[props.date.day - 1].foodCost += price.value;
+          dayData.foodCost += price.value;
         } else if (cost == '固定費') {
-          props.month[props.date.day - 1].fixedCost += price.value;
+          dayData.fixedCost += price.value;
         }
         props.changeTab('table');
       };

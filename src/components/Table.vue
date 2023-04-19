@@ -10,16 +10,6 @@
         type: String,
         required: true,
       },
-      dayOfMonth: {
-        interface: Object as PropType<{
-          date: number;
-          dateOfWeek: string;
-          foodCost: number;
-          fixedCost: number;
-          id: number;
-        }>,
-        required: true,
-      },
       month: {
         type: Array as PropType<Month[]>,
         required: true,
@@ -72,7 +62,6 @@
         <td class="m-2 border-r border-b text-right">{{ day.foodCost }}</td>
         <td class="m-2 border-b text-right">{{ day.fixedCost }}</td>
       </tr>
-      template
     </table>
   </div>
 </template>

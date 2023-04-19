@@ -1,8 +1,8 @@
 export type Month = {
   date: number;
   dayOfWeek: string;
-  foodCost: number;
-  fixedCost: number;
+  foodCost: number | null;
+  fixedCost: number | null;
   id: number;
 };
 export type Date = {
