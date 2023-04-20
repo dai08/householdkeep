@@ -1,18 +1,39 @@
-<script setup>
-  import Form from '@/components/Form.vue';
-  import Table from '@/components/Table.vue';
+<script setup lang="ts">
+  import Form from './Form.vue';
+  import Table from './Table.vue';
   import { ref } from 'vue';
+  import { reactive } from 'vue';
+  import type { Month } from './util/types';
+  import { DAY_OF_WEEKS } from './util/constant';
 
-  const formMessage = 'フォームに好きなメッセージを書いて送ってみよう';
+  const formMessage = '家計簿入力';
   const tableMessage = 'テーブルの説明';
 
-// 初期表示はformコンポーネントÏ
+  const date = reactive({
+    year: 2024,
+    month: 4,
+    day: 1,
+  });
+
+  // 初期表示はformコンポーネントÏ
   const currentTabName = ref('form');
 
-// 表示の切替を行う関数
-  const changeTab = (tabName) => {
+  // 表示の切替を行う関数
+  const changeTab = (tabName: string) => {
     currentTabName.value = tabName;
   };
+
+  // 日付の値を変更する関数（現状はdayのみ対象）
+  const changeFormData = (day: number) => {
+    date.day = day;
+  };
+  const month: Month[] = [...Array(30)].map((_, index) => ({
+    date: index + 1,
+    dayOfWeek: DAY_OF_WEEKS[index % 7].name,
+    foodCost: null,
+    fixedCost: null,
+    id: index + 1,
+  }));
 </script>
 
 <template>
@@ -38,6 +59,7 @@
     </div>
 
     <div class="h-full px-10 py-4">
+      <!-- FormボタンとTableボタン -->
       <button
         v-on:click="changeTab('form')"
         class="shadow-lg px-2 py-1 bg-blue-400 text-lg text-white font-semibold rounded hover:bg-blue-500 hover:shadow-sm hover:translate-y-0.5 transform transition"
@@ -54,10 +76,10 @@
       <br />
       <!-- FormボタンとTableボタンによる画面表示切り替え -->
       <div v-if="currentTabName === 'form'">
-        <Form :formMessage="formMessage"></Form>
+        <Form :formMessage="formMessage" :month="month" :date="date" :changeTab="changeTab"></Form>
       </div>
       <div v-if="currentTabName === 'table'">
-        <Table :tableMessage="tableMessage" />
+        <Table :tableMessage="tableMessage" :month="month" :changeTab="changeTab" :changeFormData="changeFormData" />
       </div>
     </div>
   </div>

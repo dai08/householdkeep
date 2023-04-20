@@ -1,5 +1,8 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
+  import type { PropType } from 'vue';
+  import type { Month } from './util/types';
+  import { DAY_OF_WEEKS } from './util/constant';
 
   export default defineComponent({
     props: {
@@ -7,34 +10,30 @@
         type: String,
         required: true,
       },
+      month: {
+        type: Array as PropType<Month[]>,
+        required: true,
+      },
+      changeTab: {
+        type: Function as PropType<(tabName: string) => void>,
+        required: true,
+      },
+      changeFormData: {
+        type: Function as PropType<(day: number) => void>,
+        required: true,
+      },
     },
     setup(props) {
-      const users = [
-        { name: 'Taro', age: 20, from: 'Osaka', food: 'ラーメン', id: 1 },
-        { name: 'Taro', age: 21, from: 'Osaka', food: 'ラーメン', id: 2 },
-        { name: 'Taro', age: 22, from: 'Osaka', food: 'ラーメン', id: 3 },
-        { name: 'Taro', age: 23, from: 'Osaka', food: 'ラーメン', id: 4 },
-        { name: 'Taro', age: 20, from: 'Osaka', food: 'ラーメン', id: 5 },
-        { name: 'Taro', age: 20, from: 'Osaka', food: 'ラーメン', id: 6 },
-        { name: 'Taro', age: 20, from: 'Osaka', food: 'ラーメン', id: 7 },
-        { name: 'Taro', age: 20, from: 'Osaka', food: 'ラーメン', id: 8 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 30, from: 'Osaka', food: 'ラーメン', id: 9 },
-        { name: 'Taro', age: 40, from: 'Osaka', food: 'ラーメン', id: 9 },
-      ];
-      return { props, users };
+      // 曜日によってテーブルの背景色を変更する関数
+      const getBackgroundColor = (dayOfWeek: string): string => {
+        return DAY_OF_WEEKS.find((arr) => arr.name === dayOfWeek)?.color ?? DAY_OF_WEEKS[0].color;
+      };
+      // 日付をクリックした際にクリックした日付がプルダウンで表示された状態でFormタグに切り替わる関数
+      const changeTabAndFormData = (day: number) => {
+        props.changeTab('form');
+        props.changeFormData(day);
+      };
+      return { props, getBackgroundColor, changeTabAndFormData };
     },
   });
 </script>
@@ -43,17 +42,25 @@
   <div>
     <span>{{ props.tableMessage }}</span>
     <table>
-      <tr>
-        <td>名前</td>
-        <td>年齢</td>
-        <td>出身地</td>
-        <td>好きな食べ物</td>
+      <tr class="bg-gray-100 border-b-2 border-gray-400">
+        <td class="w-20 p-2 border-r border-gray-400">日付</td>
+        <td class="w-16 p-2 border-r border-gray-400">曜日</td>
+        <td class="w-60 p-2 border-r border-gray-400">食費</td>
+        <td class="w-60 p-2">固定費</td>
       </tr>
-      <tr v-for="user in users" :key="user.id">
-        <td>{{ user.name }}</td>
-        <td>{{ user.age }}</td>
-        <td>{{ user.from }}</td>
-        <td>{{ user.food }}</td>
+      <tr v-for="day in month" :key="day.id">
+        <td class="border-r border-b cursor-pointer" :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }">
+          <div class="m-2" @click="changeTabAndFormData(day.id)">
+            {{ day.date }}
+          </div>
+        </td>
+        <td class="m-2 p-0 border-r border-b" :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }">
+          <div class="m-2">
+            {{ day.dayOfWeek }}
+          </div>
+        </td>
+        <td class="m-2 border-r border-b text-right">{{ day.foodCost }}</td>
+        <td class="m-2 border-b text-right">{{ day.fixedCost }}</td>
       </tr>
     </table>
   </div>
