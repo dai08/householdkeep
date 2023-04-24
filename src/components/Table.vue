@@ -1,28 +1,28 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
-  import type { PropType } from 'vue';
-  import type { Month } from './util/types';
+  // import type { PropType } from 'vue';
+  // import type { Month } from './util/types';
   import { DAY_OF_WEEKS } from './util/constant';
   import { useTableStore } from '../stores/table';
 
   export default defineComponent({
     props: {
-      tableMessage: {
-        type: String,
-        required: true,
-      },
-      month: {
-        type: Array as PropType<Month[]>,
-        required: true,
-      },
-      changeTab: {
-        type: Function as PropType<(tabName: string) => void>,
-        required: true,
-      },
-      changeFormData: {
-        type: Function as PropType<(day: number) => void>,
-        required: true,
-      },
+      // tableMessage: {
+      //   type: String,
+      //   required: true,
+      // },
+      // month: {
+      //   type: Array as PropType<Month[]>,
+      //   required: true,
+      // },
+      // changeTab: {
+      //   type: Function as PropType<(tabName: string) => void>,
+      //   required: true,
+      // },
+      // changeFormData: {
+      //   type: Function as PropType<(day: number) => void>,
+      //   required: true,
+      // },
     },
     setup(props) {
       // 曜日によってテーブルの背景色を変更する関数

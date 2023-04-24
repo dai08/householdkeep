@@ -19,14 +19,14 @@ export const useTableStore = defineStore({
       foodCost: null,
       fixedCost: null,
       id: index + 1,
-    })),
+    })) as Month[],
     // フォームと同期している日付
     // Date[]型にしたかったが出来なかったです
     date: reactive({
       year: 2024,
       month: 4,
       day: 1,
-    }),
+    }) as Date,
     currentTabName: ref('form'),
   }),
 

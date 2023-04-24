@@ -1,7 +1,7 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
-  import { ref, type PropType } from 'vue';
-  import type { Month, Date } from './util/types';
+  import { ref } from 'vue';
+  import type { Month } from './util/types';
   import { COST_TYPE } from './util/constant';
   import { useTableStore } from '../stores/table';
 
@@ -10,22 +10,22 @@
 
   export default defineComponent({
     props: {
-      formMessage: {
-        type: String,
-        required: true,
-      },
-      date: {
-        type: Object as PropType<Date>,
-        required: true,
-      },
-      changeTab: {
-        type: Function as PropType<(cost: string) => void>,
-        required: true,
-      },
-      month: {
-        type: Array as PropType<Month[]>,
-        required: true,
-      },
+      // formMessage: {
+      //   type: String,
+      //   required: true,
+      // },
+      // date: {
+      //   type: Object as PropType<Date>,
+      //   required: true,
+      // },
+      // changeTab: {
+      //   type: Function as PropType<(cost: string) => void>,
+      //   required: true,
+      // },
+      // month: {
+      //   type: Array as PropType<Month[]>,
+      //   required: true,
+      // },
     },
     setup(props) {
       const setDay = (day: number) => {
