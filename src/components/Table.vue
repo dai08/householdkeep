@@ -3,6 +3,11 @@
   import type { PropType } from 'vue';
   import type { Month } from './util/types';
   import { DAY_OF_WEEKS } from './util/constant';
+  import { useTableStore } from '../stores/table';
+
+  const tablestore = useTableStore();
+  // eslint-disable-next-line no-console
+  console.log(tablestore.counter);
 
   export default defineComponent({
     props: {
@@ -40,7 +45,7 @@
 
 <template>
   <div>
-    <span>{{ props.tableMessage }}</span>
+    <span>{{ tableMessage }}</span>
     <table>
       <tr class="bg-gray-100 border-b-2 border-gray-400">
         <td class="w-20 p-2 border-r border-gray-400">日付</td>
@@ -54,8 +59,11 @@
             {{ day.date }}
           </div>
         </td>
-        <td class="m-2 p-0 border-r border-b" :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }">
-          <div class="m-2">
+        <td
+          class="m-2 p-0 border-r border-b cursor-pointer"
+          :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }"
+        >
+          <div class="m-2" @click="changeTabAndFormData(day.id)">
             {{ day.dayOfWeek }}
           </div>
         </td>

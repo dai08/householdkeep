@@ -34,10 +34,9 @@ a,
   }
 }
 
-
 /* 追記 */
 .flex {
-  color:black;
+  color: black;
   width: 100vw;
   height: 100vh;
 }
@@ -58,7 +57,3 @@ textarea {
   width: 480px;
   border-radius: 30px;
 }
-
-form .formbottom {
-	text-align: center;
-} 
