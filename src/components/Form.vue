@@ -3,6 +3,7 @@
   import { ref, type PropType } from 'vue';
   import type { Month, Date } from './util/types';
   import { COST_TYPE } from './util/constant';
+  import { useTableStore } from '../stores/table';
 
   const cost = ref('食費');
   const price = ref(0);
@@ -28,19 +29,19 @@
     },
     setup(props) {
       const setDay = (day: number) => {
-        props.date.day = day;
+        tablestore.date.day = day;
       };
       // 食費や固定費に値を代入しつつ、tableタグに遷移するメソッド
       const setDataFoodCost = () => {
-        const dayData = props.month[props.date.day - 1];
+        const dayData = tablestore.month[tablestore.date.day - 1] as Month;
         dayData.foodCost ? (dayData.foodCost += price.value) : (dayData.foodCost = price.value);
       };
       const setDataFixedCost = () => {
-        const dayData = props.month[props.date.day - 1];
+        const dayData = tablestore.month[tablestore.date.day - 1] as Month;
         dayData.fixedCost ? (dayData.fixedCost += price.value) : (dayData.fixedCost = price.value);
       };
       const setInitialData = () => {
-        props.date.day = 1;
+        tablestore.date.day = 1;
         cost.value = '食費';
         price.value = 0;
       };
@@ -50,22 +51,24 @@
         } else if (cost === '固定費') {
           setDataFixedCost();
         }
-        props.changeTab('table');
+        tablestore.changeTab('table');
         setInitialData();
       };
-      return { props, cost, price, setDay, setDataFoodCost, setDataFixedCost, setData, COST_TYPE };
+      const tablestore = useTableStore();
+
+      return { props, cost, price, setDay, setDataFoodCost, setDataFixedCost, setData, COST_TYPE, tablestore };
     },
   });
 </script>
 
 <template>
   <div>
-    <span class="m-1">{{ props.formMessage }}</span>
+    <span class="m-1">{{ tablestore.formMessage }}</span>
     <br />
     <!-- 日付、費用種類の選択及び値段の入力フォーム -->
     <select
       class="w-20 my-2 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="date.year"
+      v-model="tablestore.date.year"
     >
       <option value="2022">2022</option>
       <option value="2023">2023</option>
@@ -74,7 +77,7 @@
     /
     <select
       class="w-20 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="date.month"
+      v-model="tablestore.date.month"
     >
       <option value="3">3</option>
       <option value="4">4</option>
@@ -82,7 +85,7 @@
     /
     <select
       class="w-20 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="date.day"
+      v-model="tablestore.date.day"
     >
       <option v-for="i in 30" :key="i" @click="setDay(i)">{{ i }}</option>
     </select>
@@ -102,18 +105,6 @@
     >
       反映
     </button>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <p>（確認用）</p>
-    {{ date.year }}
-    {{ date.month }}
-    {{ date.day }}
-    {{ cost }}
-    {{ price }}
   </div>
 </template>
 

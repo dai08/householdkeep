@@ -5,10 +5,6 @@
   import { DAY_OF_WEEKS } from './util/constant';
   import { useTableStore } from '../stores/table';
 
-  const tablestore = useTableStore();
-  // eslint-disable-next-line no-console
-  console.log(tablestore.counter);
-
   export default defineComponent({
     props: {
       tableMessage: {
@@ -35,17 +31,19 @@
       };
       // 日付をクリックした際にクリックした日付がプルダウンで表示された状態でFormタグに切り替わる関数
       const changeTabAndFormData = (day: number) => {
-        props.changeTab('form');
-        props.changeFormData(day);
+        tablestore.changeTab('form');
+        tablestore.changeFormData(day);
       };
-      return { props, getBackgroundColor, changeTabAndFormData };
+      const tablestore = useTableStore();
+
+      return { props, tablestore, getBackgroundColor, changeTabAndFormData };
     },
   });
 </script>
 
 <template>
   <div>
-    <span>{{ tableMessage }}</span>
+    <span>{{ tablestore.tableMessage }}</span>
     <table>
       <tr class="bg-gray-100 border-b-2 border-gray-400">
         <td class="w-20 p-2 border-r border-gray-400">日付</td>
@@ -53,7 +51,7 @@
         <td class="w-60 p-2 border-r border-gray-400">食費</td>
         <td class="w-60 p-2">固定費</td>
       </tr>
-      <tr v-for="day in month" :key="day.id">
+      <tr v-for="day in tablestore.month" :key="day.id">
         <td class="border-r border-b cursor-pointer" :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }">
           <div class="m-2" @click="changeTabAndFormData(day.id)">
             {{ day.date }}

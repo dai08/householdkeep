@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { DAY_OF_WEEKS } from '../components/util/constant';
-// import type { Month } from '../components/util/types';
+import type { Month, Date } from '../components/util/types';
 import { reactive } from 'vue';
 import { ref } from 'vue';
 
@@ -8,7 +8,6 @@ export const useTableStore = defineStore({
   id: 'table',
 
   state: () => ({
-    counter: 1,
     // 各タブに表示するメッセージ
     formMessage: '支出',
     tableMessage: '今月の家計簿',
@@ -46,6 +45,7 @@ export const useTableStore = defineStore({
     changeTab(tabName: string) {
       this.currentTabName = tabName;
     },
+    // Formのプルダウンで表示する日付をtableで選択したものにする処理
     changeFormData(day: number) {
       this.date.day = day;
     },

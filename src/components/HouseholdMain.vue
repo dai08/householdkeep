@@ -44,19 +44,10 @@
     <div class="h-full px-10 py-4">
       <!-- FormボタンとTableボタンによる画面表示切り替え -->
       <div v-if="tablestore.currentTabName === 'form'">
-        <Form
-          :formMessage="tablestore.formMessage"
-          :date="tablestore.date"
-          :changeTab="tablestore.changeTab"
-          :month="tablestore.month"
-        ></Form>
+        <Form />
       </div>
       <div v-if="tablestore.currentTabName === 'table'">
-        <Table
-          :changeFormData="tablestore.changeFormData"
-          :changeTab="tablestore.changeTab"
-          :month="tablestore.month"
-        />
+        <Table />
       </div>
     </div>
   </div>
