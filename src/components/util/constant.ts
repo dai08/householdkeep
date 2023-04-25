@@ -27,12 +27,12 @@ export const DAY_OF_WEEKS = [
   {
     id: 6,
     name: '土',
-    color: 'LightCyan',
+    color: '#ebf8ff',
   },
   {
     id: 7,
     name: '日',
-    color: 'LightPink',
+    color: '#fed7d7',
   },
 ];
 

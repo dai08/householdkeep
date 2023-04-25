@@ -1,8 +1,7 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
-  import type { PropType } from 'vue';
-  import type { Month } from './util/types';
   import { DAY_OF_WEEKS } from './util/constant';
+  import { useHouseholdStore } from '../stores/household';
 
   export default defineComponent({
     props: {
@@ -10,30 +9,21 @@
         type: String,
         required: true,
       },
-      month: {
-        type: Array as PropType<Month[]>,
-        required: true,
-      },
-      changeTab: {
-        type: Function as PropType<(tabName: string) => void>,
-        required: true,
-      },
-      changeFormData: {
-        type: Function as PropType<(day: number) => void>,
-        required: true,
-      },
     },
     setup(props) {
+      const householdStore = useHouseholdStore();
+
       // 曜日によってテーブルの背景色を変更する関数
       const getBackgroundColor = (dayOfWeek: string): string => {
         return DAY_OF_WEEKS.find((arr) => arr.name === dayOfWeek)?.color ?? DAY_OF_WEEKS[0].color;
       };
       // 日付をクリックした際にクリックした日付がプルダウンで表示された状態でFormタグに切り替わる関数
       const changeTabAndFormData = (day: number) => {
-        props.changeTab('form');
-        props.changeFormData(day);
+        householdStore.changeTab('form');
+        householdStore.setDay(day);
       };
-      return { props, getBackgroundColor, changeTabAndFormData };
+
+      return { props, householdStore, getBackgroundColor, changeTabAndFormData };
     },
   });
 </script>
@@ -48,14 +38,17 @@
         <td class="w-60 p-2 border-r border-gray-400">食費</td>
         <td class="w-60 p-2">固定費</td>
       </tr>
-      <tr v-for="day in month" :key="day.id">
+      <tr v-for="day in householdStore.month" :key="day.id">
         <td class="border-r border-b cursor-pointer" :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }">
           <div class="m-2" @click="changeTabAndFormData(day.id)">
             {{ day.date }}
           </div>
         </td>
-        <td class="m-2 p-0 border-r border-b" :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }">
-          <div class="m-2">
+        <td
+          class="m-2 p-0 border-r border-b cursor-pointer"
+          :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }"
+        >
+          <div class="m-2" @click="changeTabAndFormData(day.id)">
             {{ day.dayOfWeek }}
           </div>
         </td>
