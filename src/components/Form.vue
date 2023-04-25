@@ -15,20 +15,20 @@
       },
     },
     setup(props) {
-      const householdstore = useHouseholdStore();
+      const householdStore = useHouseholdStore();
 
       // フォームで選択または入力した日付、コスト、価格をテーブルに反映させ、タブをテーブルにしつつフォームデータを初期化する
       const setData = (cost: string) => {
         if (cost === '食費') {
-          householdstore.setDataFoodCost();
+          householdStore.setDataFoodCost();
         } else if (cost === '固定費') {
-          householdstore.setDataFixedCost();
+          householdStore.setDataFixedCost();
         }
-        householdstore.changeTab('table');
-        householdstore.setInitialData();
+        householdStore.changeTab('table');
+        householdStore.setInitialData();
       };
 
-      return { props, cost, price, setData, COST_TYPE, householdstore };
+      return { props, cost, price, setData, COST_TYPE, householdStore };
     },
   });
 </script>
@@ -40,7 +40,7 @@
     <!-- 日付、費用種類の選択及び値段の入力フォーム -->
     <select
       class="w-20 my-2 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="householdstore.date.year"
+      v-model="householdStore.date.year"
     >
       <option value="2022">2022</option>
       <option value="2023">2023</option>
@@ -49,7 +49,7 @@
     /
     <select
       class="w-20 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="householdstore.date.month"
+      v-model="householdStore.date.month"
     >
       <option value="3">3</option>
       <option value="4">4</option>
@@ -57,9 +57,9 @@
     /
     <select
       class="w-20 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="householdstore.date.day"
+      v-model="householdStore.date.day"
     >
-      <option v-for="i in 30" :key="i" @click="householdstore.setDay(i)">{{ i }}</option>
+      <option v-for="i in 30" :key="i" @click="householdStore.setDay(i)">{{ i }}</option>
     </select>
     <br />
     <select
@@ -73,7 +73,7 @@
     <input
       type="number"
       class="text-lg my-1 border border-gray-400 rounded"
-      v-model="householdstore.price"
+      v-model="householdStore.price"
       name="price"
     />
     <button

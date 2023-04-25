@@ -46,11 +46,11 @@ export const useHouseholdStore = defineStore({
       this.date.day = day;
     },
     setDataFoodCost() {
-      const dayData = this.month[this.date.day - 1] as Month;
+      const dayData = this.month[this.date.day - 1];
       dayData.foodCost ? (dayData.foodCost += this.price) : (dayData.foodCost = this.price);
     },
     setDataFixedCost() {
-      const dayData = this.month[this.date.day - 1] as Month;
+      const dayData = this.month[this.date.day - 1];
       dayData.fixedCost ? (dayData.fixedCost += this.price) : (dayData.fixedCost = this.price);
     },
     setInitialData() {

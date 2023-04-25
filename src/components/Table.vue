@@ -11,7 +11,7 @@
       },
     },
     setup(props) {
-      const householdstore = useHouseholdStore();
+      const householdStore = useHouseholdStore();
 
       // 曜日によってテーブルの背景色を変更する関数
       const getBackgroundColor = (dayOfWeek: string): string => {
@@ -19,11 +19,11 @@
       };
       // 日付をクリックした際にクリックした日付がプルダウンで表示された状態でFormタグに切り替わる関数
       const changeTabAndFormData = (day: number) => {
-        householdstore.changeTab('form');
-        householdstore.setDay(day);
+        householdStore.changeTab('form');
+        householdStore.setDay(day);
       };
 
-      return { props, householdstore, getBackgroundColor, changeTabAndFormData };
+      return { props, householdStore, getBackgroundColor, changeTabAndFormData };
     },
   });
 </script>
@@ -38,7 +38,7 @@
         <td class="w-60 p-2 border-r border-gray-400">食費</td>
         <td class="w-60 p-2">固定費</td>
       </tr>
-      <tr v-for="day in householdstore.month" :key="day.id">
+      <tr v-for="day in householdStore.month" :key="day.id">
         <td class="border-r border-b cursor-pointer" :style="{ backgroundColor: getBackgroundColor(day.dayOfWeek) }">
           <div class="m-2" @click="changeTabAndFormData(day.id)">
             {{ day.date }}
