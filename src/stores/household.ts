@@ -1,18 +1,12 @@
 import { defineStore } from 'pinia';
 import { DAY_OF_WEEKS } from '../components/util/constant';
 import type { Month, Date } from '../components/util/types';
-import { reactive } from 'vue';
-import { ref } from 'vue';
 
-export const useTableStore = defineStore({
-  id: 'table',
+export const useHouseholdStore = defineStore({
+  id: 'household',
 
   state: () => ({
-    // 各タブに表示するメッセージ
-    formMessage: '支出',
-    tableMessage: '今月の家計簿',
     // テーブルの日付、曜日、コスト
-    // Month[]型にしたかったが出来なかったです
     month: [...Array(30)].map((_, index) => ({
       date: index + 1,
       dayOfWeek: DAY_OF_WEEKS[index % 7].name,
@@ -21,21 +15,23 @@ export const useTableStore = defineStore({
       id: index + 1,
     })) as Month[],
     // フォームと同期している日付
-    // Date[]型にしたかったが出来なかったです
-    date: reactive({
+    date: {
       year: 2024,
       month: 4,
       day: 1,
-    }) as Date,
-    currentTabName: ref('form'),
+    } as Date,
+    // 表示するタブの初期値
+    currentTabName: 'form' as string,
+    cost: '食費' as string,
+    price: 0 as number,
   }),
 
   getters: {
-    numFoodCost(): number {
+    getTotalFoodCost(): number {
       const total = this.month.reduce((sum, i) => sum + (i.foodCost ?? 0), 0);
       return total;
     },
-    numFixedCost(): number {
+    getTotalFixedCost(): number {
       const total = this.month.reduce((sum, i) => sum + (i.fixedCost ?? 0), 0);
       return total;
     },
@@ -46,8 +42,21 @@ export const useTableStore = defineStore({
       this.currentTabName = tabName;
     },
     // Formのプルダウンで表示する日付をtableで選択したものにする処理
-    changeFormData(day: number) {
+    setDay(day: number) {
       this.date.day = day;
+    },
+    setDataFoodCost() {
+      const dayData = this.month[this.date.day - 1] as Month;
+      dayData.foodCost ? (dayData.foodCost += this.price) : (dayData.foodCost = this.price);
+    },
+    setDataFixedCost() {
+      const dayData = this.month[this.date.day - 1] as Month;
+      dayData.fixedCost ? (dayData.fixedCost += this.price) : (dayData.fixedCost = this.price);
+    },
+    setInitialData() {
+      this.date.day = 1;
+      this.cost = '食費';
+      this.price = 0;
     },
   },
 });

@@ -1,74 +1,46 @@
 <script lang="ts">
   import { defineComponent } from '@vue/runtime-core';
   import { ref } from 'vue';
-  import type { Month } from './util/types';
   import { COST_TYPE } from './util/constant';
-  import { useTableStore } from '../stores/table';
+  import { useHouseholdStore } from '../stores/household';
 
   const cost = ref('食費');
   const price = ref(0);
 
   export default defineComponent({
     props: {
-      // formMessage: {
-      //   type: String,
-      //   required: true,
-      // },
-      // date: {
-      //   type: Object as PropType<Date>,
-      //   required: true,
-      // },
-      // changeTab: {
-      //   type: Function as PropType<(cost: string) => void>,
-      //   required: true,
-      // },
-      // month: {
-      //   type: Array as PropType<Month[]>,
-      //   required: true,
-      // },
+      formMessage: {
+        type: String,
+        required: true,
+      },
     },
     setup(props) {
-      const setDay = (day: number) => {
-        tablestore.date.day = day;
-      };
-      // 食費や固定費に値を代入しつつ、tableタグに遷移するメソッド
-      const setDataFoodCost = () => {
-        const dayData = tablestore.month[tablestore.date.day - 1] as Month;
-        dayData.foodCost ? (dayData.foodCost += price.value) : (dayData.foodCost = price.value);
-      };
-      const setDataFixedCost = () => {
-        const dayData = tablestore.month[tablestore.date.day - 1] as Month;
-        dayData.fixedCost ? (dayData.fixedCost += price.value) : (dayData.fixedCost = price.value);
-      };
-      const setInitialData = () => {
-        tablestore.date.day = 1;
-        cost.value = '食費';
-        price.value = 0;
-      };
+      const householdstore = useHouseholdStore();
+
+      // フォームで選択または入力した日付、コスト、価格をテーブルに反映させ、タブをテーブルにしつつフォームデータを初期化する
       const setData = (cost: string) => {
         if (cost === '食費') {
-          setDataFoodCost();
+          householdstore.setDataFoodCost();
         } else if (cost === '固定費') {
-          setDataFixedCost();
+          householdstore.setDataFixedCost();
         }
-        tablestore.changeTab('table');
-        setInitialData();
+        householdstore.changeTab('table');
+        householdstore.setInitialData();
       };
-      const tablestore = useTableStore();
 
-      return { props, cost, price, setDay, setDataFoodCost, setDataFixedCost, setData, COST_TYPE, tablestore };
+      return { props, cost, price, setData, COST_TYPE, householdstore };
     },
   });
 </script>
 
 <template>
   <div>
-    <span class="m-1">{{ tablestore.formMessage }}</span>
+    <span class="m-1">{{ props.formMessage }}</span>
     <br />
     <!-- 日付、費用種類の選択及び値段の入力フォーム -->
     <select
       class="w-20 my-2 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="tablestore.date.year"
+      v-model="householdstore.date.year"
     >
       <option value="2022">2022</option>
       <option value="2023">2023</option>
@@ -77,7 +49,7 @@
     /
     <select
       class="w-20 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="tablestore.date.month"
+      v-model="householdstore.date.month"
     >
       <option value="3">3</option>
       <option value="4">4</option>
@@ -85,9 +57,9 @@
     /
     <select
       class="w-20 bg-white border border-gray-400 hover:border-gray-500 rounded shadow focus:shadow-outline"
-      v-model="tablestore.date.day"
+      v-model="householdstore.date.day"
     >
-      <option v-for="i in 30" :key="i" @click="setDay(i)">{{ i }}</option>
+      <option v-for="i in 30" :key="i" @click="householdstore.setDay(i)">{{ i }}</option>
     </select>
     <br />
     <select
@@ -98,7 +70,12 @@
     </select>
 
     <br />
-    <input type="number" class="text-lg my-1 border border-gray-400 rounded" v-model="price" name="price" />
+    <input
+      type="number"
+      class="text-lg my-1 border border-gray-400 rounded"
+      v-model="householdstore.price"
+      name="price"
+    />
     <button
       @click="setData(cost)"
       class="shadow-lg mx-1 px-2 py-1 bg-orange-400 text-lg text-white font-semibold rounded hover:bg-orange-500 hover:shadow-sm hover:translate-y-0.5 transform transition"
